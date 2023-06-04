@@ -9,7 +9,7 @@ public class EnemyMovement : MonoBehaviour
 {
     [SerializeField] private float _speed;
 
-    private Rigidbody2D _rb;
+    private Rigidbody2D _rigidbody2d;
     private EnemyGroundChecker _groundChecker;
     private EnemyWallChecker _wallChecker;
 
@@ -18,9 +18,9 @@ public class EnemyMovement : MonoBehaviour
         _speed= 0;
     }
 
-    void Awake()
+    private void Awake()
     {
-        _rb= GetComponent<Rigidbody2D>();
+        _rigidbody2d= GetComponent<Rigidbody2D>();
         _groundChecker= GetComponentInChildren<EnemyGroundChecker>();
         _wallChecker= GetComponentInChildren<EnemyWallChecker>();
     }
@@ -37,9 +37,9 @@ public class EnemyMovement : MonoBehaviour
         _wallChecker.ThereWallAhead -= TurnAround;
     }
 
-    void Update()
+    private void Update()
     {
-        _rb.velocity = new Vector2(_speed, 0);
+        _rigidbody2d.velocity = new Vector2(_speed, 0);
     }
 
     private void TurnAround()

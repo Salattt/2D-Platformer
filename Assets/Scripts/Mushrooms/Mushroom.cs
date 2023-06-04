@@ -8,6 +8,7 @@ using UnityEngine;
 public class Mushroom : MonoBehaviour
 {
     private AudioSource _audioSource;
+    private float _destroyDelay = 0.6f;
 
     private void Awake()
     {
@@ -19,7 +20,7 @@ public class Mushroom : MonoBehaviour
         if (collision.GetComponent(typeof(Player)))
         {
             _audioSource.Play();
-            Destroy(gameObject, 0.6f);
+            Destroy(gameObject, _destroyDelay);
         }
     }
 }

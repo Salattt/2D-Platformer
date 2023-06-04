@@ -15,18 +15,19 @@ public class PlayerMovement : MonoBehaviour
     private GroundChecker _groundChecker;
     private Animator _animator;
     private Transform _transform;
-    private Rigidbody2D _rb;
+    private Rigidbody2D _rigidbody2d;
     private float _jumpForce = 0;
     private int _animatorYSpeed = Animator.StringToHash("YSpeed");
     private int _animatorIsOnGround = Animator.StringToHash("IsOnGround");
     private int _animatorIsJumpStartup = Animator.StringToHash("IsJumpStartup");
     private bool _isFaceRight = true;
+    private float _epsilon = 0.1f;
 
     private void Awake()
     {
         _animator= GetComponent<Animator>();
         _transform= transform;
-        _rb= GetComponent<Rigidbody2D>();
+        _rigidbody2d= GetComponent<Rigidbody2D>();
         _groundChecker= GetComponentInChildren<GroundChecker>();
     }
 
@@ -46,7 +47,7 @@ public class PlayerMovement : MonoBehaviour
         Jump();
         Reflect();
 
-        _animator.SetFloat(_animatorYSpeed, _rb.velocity.y);
+        _animator.SetFloat(_animatorYSpeed, _rigidbody2d.velocity.y);
         _animator.SetBool(_animatorIsOnGround, _groundChecker.IsOnGround);
     }
 
@@ -56,22 +57,22 @@ public class PlayerMovement : MonoBehaviour
 
         if (Input.GetKey(KeyCode.D) && _groundChecker.IsOnGround)
         {
-            newSpeed = _rb.velocity.x + _maxWalkSpeed * Time.deltaTime / _timeToMaxWalkSpeed;
+            newSpeed = _rigidbody2d.velocity.x + _maxWalkSpeed * Time.deltaTime / _timeToMaxWalkSpeed;
 
             if (newSpeed <= _maxWalkSpeed)
-                _rb.velocity = new Vector2(newSpeed, _rb.velocity.y);
+                _rigidbody2d.velocity = new Vector2(newSpeed, _rigidbody2d.velocity.y);
             else
-                _rb.velocity = new Vector2(_maxWalkSpeed, _rb.velocity.y);
+                _rigidbody2d.velocity = new Vector2(_maxWalkSpeed, _rigidbody2d.velocity.y);
         }
 
         if (Input.GetKey(KeyCode.A) && _groundChecker.IsOnGround)
         {
-            newSpeed = _rb.velocity.x - _maxWalkSpeed * Time.deltaTime / _timeToMaxWalkSpeed;
+            newSpeed = _rigidbody2d.velocity.x - _maxWalkSpeed * Time.deltaTime / _timeToMaxWalkSpeed;
 
             if (newSpeed * -1 <= _maxWalkSpeed)
-                _rb.velocity = new Vector2(newSpeed, _rb.velocity.y);
+                _rigidbody2d.velocity = new Vector2(newSpeed, _rigidbody2d.velocity.y);
             else
-                _rb.velocity = new Vector2(-1 * _maxWalkSpeed, _rb.velocity.y);
+                _rigidbody2d.velocity = new Vector2(-1 * _maxWalkSpeed, _rigidbody2d.velocity.y);
         }
     }
 
@@ -86,9 +87,9 @@ public class PlayerMovement : MonoBehaviour
         else 
         {
             if(_jumpForce <= _maxJumpForce)
-                _rb.AddForce(new Vector2(0 , _jumpForce));
+                _rigidbody2d.AddForce(new Vector2(0 , _jumpForce));
             else
-                _rb.AddForce(new Vector2(0 , _maxJumpForce));
+                _rigidbody2d.AddForce(new Vector2(0 , _maxJumpForce));
 
             _jumpForce = 0;
 
@@ -98,7 +99,7 @@ public class PlayerMovement : MonoBehaviour
 
     private void Reflect() 
     { 
-        if((_rb.velocity.x > 0.1 && _isFaceRight == false) || (_rb.velocity.x < -0.1 && _isFaceRight))
+        if((_rigidbody2d.velocity.x > _epsilon && _isFaceRight == false) || (_rigidbody2d.velocity.x < _epsilon && _isFaceRight))
         {
             _isFaceRight = !_isFaceRight;
             _transform.localScale *= new Vector2(-1, 1);
@@ -107,7 +108,7 @@ public class PlayerMovement : MonoBehaviour
 
     private void OnHit()
     {
-        _rb.velocity = new Vector2(_rb.velocity.x, 0);
-        _rb.AddForce(new Vector2(0,_maxJumpForce));
+        _rigidbody2d.velocity = new Vector2(_rigidbody2d.velocity.x, 0);
+        _rigidbody2d.AddForce(new Vector2(0,_maxJumpForce));
     }
 }

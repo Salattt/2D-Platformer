@@ -11,6 +11,7 @@ public class Enemy : MonoBehaviour
     private Animator _animator;
     private EnemyMovement _enemyMovement;
     private int _animationDie = Animator.StringToHash("IsDiyng");
+    private float _destroyDelay = 0.6f;
 
     private void Awake()
     {
@@ -34,6 +35,6 @@ public class Enemy : MonoBehaviour
     {
         _animator.SetBool(_animationDie, true);
         _enemyMovement.Stop();
-        Destroy(gameObject, 0.6f);    
+        Destroy(gameObject, _destroyDelay);    
     }
 }
