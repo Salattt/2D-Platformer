@@ -14,7 +14,6 @@ public class PlayerMovement : MonoBehaviour
 
     private GroundChecker _groundChecker;
     private Animator _animator;
-    private Transform _transform;
     private Rigidbody2D _rigidbody2d;
     private float _jumpForce = 0;
     private int _animatorYSpeed = Animator.StringToHash("YSpeed");
@@ -26,7 +25,6 @@ public class PlayerMovement : MonoBehaviour
     private void Awake()
     {
         _animator= GetComponent<Animator>();
-        _transform= transform;
         _rigidbody2d= GetComponent<Rigidbody2D>();
         _groundChecker= GetComponentInChildren<GroundChecker>();
     }
@@ -99,10 +97,11 @@ public class PlayerMovement : MonoBehaviour
 
     private void Reflect() 
     { 
-        if((_rigidbody2d.velocity.x > _epsilon && _isFaceRight == false) || (_rigidbody2d.velocity.x < _epsilon && _isFaceRight))
+        if((_rigidbody2d.velocity.x > _epsilon && _isFaceRight == false) 
+            || (_rigidbody2d.velocity.x < _epsilon && _isFaceRight))
         {
             _isFaceRight = !_isFaceRight;
-            _transform.localScale *= new Vector2(-1, 1);
+            transform.localScale *= new Vector2(-1, 1);
         }
     }
 

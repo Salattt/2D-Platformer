@@ -7,11 +7,11 @@ using UnityEngine;
 
 public class EnemyHitBox : MonoBehaviour
 {
-    public event Action GetHit;
+    public event Action GettingHit;
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
         if (collision.GetComponent(typeof(Player)))
-            GetHit?.Invoke();
+            GettingHit?.Invoke();
     }
 }

@@ -22,16 +22,16 @@ public class Enemy : MonoBehaviour
 
     private void OnEnable()
     {
-        _hitBox.GetHit += Die;
+        _hitBox.GettingHit += OnGettingHit;
     }
 
     private void OnDisable()
     {
 
-        _hitBox.GetHit -= Die;
+        _hitBox.GettingHit -= OnGettingHit;
     }
 
-    private void Die()
+    private void OnGettingHit()
     {
         _animator.SetBool(_animationDie, true);
         _enemyMovement.Stop();
